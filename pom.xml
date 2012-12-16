@@ -1,0 +1,124 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>takenami</groupId>
+    <artifactId>gpswing</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>GPSwing</name>
+    <url>https://github.com/itakenami</url>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mainClass>app.Main</mainClass>
+    </properties>
+    
+    <repositories>
+        <repository>
+            <id>takenami-m2.repository</id>
+            <name>Repositorio de Projetos Maven - Takenami</name>
+            <url>http://www.takenami.com.br/maven/release/</url>
+        </repository>
+    </repositories>
+    
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+			
+            <!-- Copia as libs na pasta de distribuição -->
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/dist</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>${mainClass}</mainClass>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            
+            <!-- Gera uma distribuição na pasta dist -->
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/dist/lib</outputDirectory>
+                    <includeScope>runtime</includeScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>dep-copy</id>
+                        <phase>package</phase>
+                        <goals> 
+                            <goal>copy-dependencies</goal> 
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- Executa a aplicação com o comando: mvn exec:java -->
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>${mainClass}</mainClass>
+                    <arguments>
+                        <argument></argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+			
+        </plugins>
+        <finalName>gpswing</finalName>
+        
+    </build>
+
+    <dependencies>
+        
+        <!-- Dependencia de Testes -->
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Dependencia de LIB -->
+        
+        <dependency>
+            <groupId>takenami</groupId>
+            <artifactId>rest-swing</artifactId>
+            <version>1.0</version>
+        </dependency>
+        	
+    </dependencies>
+    
+</project>
